@@ -6,8 +6,9 @@ function Register() {
     e.preventDefault()
     const email = (e.target as HTMLFormElement).email.value
     const password = (e.target as HTMLFormElement).password.value
+    const displayName = (e.target as HTMLFormElement)['display-name'].value
     try {
-      await signUp(email, password)
+      await signUp(email, password, displayName)
     } catch (error) {
       console.log(error)
     }
