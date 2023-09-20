@@ -1,8 +1,9 @@
+import { FormEvent } from 'react'
 import { signUp } from '../../firebase/auth'
 
 function Register() {
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     const email = (e.target as HTMLFormElement).email.value
     const password = (e.target as HTMLFormElement).password.value

@@ -1,5 +1,6 @@
+import { FormEvent } from "react"
 import { updateImage, updateName } from "../firebase/auth"
-import { FirebaseUser } from "../models/auth"
+import { FirebaseUser } from "../models"
 
 interface Props {
   displayName: string
@@ -8,15 +9,16 @@ interface Props {
   closeEdit: () => void
 }
 
+
 function Profile({ displayName, photoURL, updateUser, closeEdit }: Props) {
-  const handleNameChange = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleNameChange = async (e: FormEvent) => {
     e.preventDefault()
     const displayName = (e.target as HTMLFormElement)['display-name'].value
     const newUser = await updateName(displayName)
     updateUser({ displayName: newUser.displayName })
   }
 
-  const handleImageChange = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleImageChange = async (e: FormEvent) => {
     e.preventDefault()
     const photoURL = (e.target as HTMLFormElement)['photo-url'].value
     const newUser = await updateImage(photoURL)

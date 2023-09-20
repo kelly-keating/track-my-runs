@@ -8,7 +8,8 @@ const firebaseConfig = {
   projectId: "track-my-runs",
   storageBucket: "track-my-runs.appspot.com",
   messagingSenderId: "919903841959",
-  appId: "1:919903841959:web:73f534d62dec9089b6b582"
+  appId: "1:919903841959:web:73f534d62dec9089b6b582",
+  databaseURL: "https://track-my-runs-default-rtdb.asia-southeast1.firebasedatabase.app",
 }
 const firebaseApp = initializeApp(firebaseConfig)
 

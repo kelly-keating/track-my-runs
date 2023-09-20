@@ -1,6 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 
+import './styles/index.scss'
+import './firebase'
+
 import App from './App'
 
 const root = ReactDOM.createRoot(

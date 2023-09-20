@@ -1,14 +1,19 @@
+import { RunSet } from "../models"
 import AddRun from "./AddRun"
 
-function RunList() {
+interface Props {
+  runs: RunSet
+}
+
+function RunList({ runs }: Props ) {
   return (
     <div>
       <AddRun />
       <h2>Previous Runs</h2>
       <ul>
-        <li>Run 1</li>
-        <li>Run 2</li>
-        <li>etc</li>
+        {Object.values(runs).map((run) => (
+          <li key={run.date}>{run.totalKms}km in {run.totalMinutes} minutes ({run.date})</li>
+        ))}
       </ul>
     </div>
   )

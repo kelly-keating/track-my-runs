@@ -1,5 +1,4 @@
-import { FirebaseUser } from '../models/auth'
-import { auth } from './index'
+import { FirebaseUser } from '../models'
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
@@ -7,9 +6,13 @@ import {
   updateProfile,
 } from '@firebase/auth'
 
+import { auth } from './index'
+import { addUserToDb } from './db'
+
 export function signUp(email: string, password: string, name: string) {
   return createUserWithEmailAndPassword(auth, email, password)
     .then(({ user }) => updateProfile(user, { displayName: name }))
+    .then(() => addUserToDb())
 }
 
 export function signIn(email: string, password: string) {
@@ -18,6 +21,11 @@ export function signIn(email: string, password: string) {
 
 export function signOut() {
   return auth.signOut()
+}
+
+export function getUser() {
+  if (!auth.currentUser) throw new Error('No user logged in')
+  return auth.currentUser as FirebaseUser
 }
 
 export function updateName(name: string) {

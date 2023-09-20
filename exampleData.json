@@ -1,0 +1,23 @@
+{
+  "users": {
+    "lOoGDa6TTEb62iStJztG1rZrZ6Y2": {
+        "runs": {
+          "2023-09-15": {
+            "date": "2023-09-15",
+            "totalKms": 2,
+            "totalMinutes": 23.37,
+            "points": [
+              {
+                "distance": 1.72,
+                "time": 20
+              },
+              {
+                "distance": 2,
+                "time": 23.37
+              }
+            ]
+          }
+        }
+    }
+  }
+}
