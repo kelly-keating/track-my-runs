@@ -6,15 +6,15 @@ interface Props {
   displayName: string
   photoURL: string
   updateUser: (newDetails: Partial<FirebaseUser>) => void
-  closeEdit: () => void
+  showHome: () => void
 }
 
 
-function Profile({ displayName, photoURL, updateUser, closeEdit }: Props) {
+function Profile({ displayName, photoURL, updateUser, showHome }: Props) {
   const handleNameChange = async (e: FormEvent) => {
     e.preventDefault()
-    const displayName = (e.target as HTMLFormElement)['display-name'].value
-    const newUser = await updateName(displayName)
+    const newName = (e.target as HTMLFormElement)['display-name'].value
+    const newUser = await updateName(newName)
     updateUser({ displayName: newUser.displayName })
   }
 
@@ -44,7 +44,7 @@ function Profile({ displayName, photoURL, updateUser, closeEdit }: Props) {
           <button type="submit">Update</button>
         </form>
       </div>
-      <button onClick={closeEdit}>Done</button>
+      <button onClick={showHome}>Done</button>
     </div>
   )
 }
