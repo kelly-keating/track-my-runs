@@ -1,17 +1,17 @@
-import { FormEvent, useState } from "react"
 import { RunPoint } from "../models"
+import dayjs from "dayjs"
+
+import { FormEvent, useState } from "react"
+import { DatePicker, TimePicker } from "@mui/x-date-pickers"
+
 import { createRun } from "../firebase/db"
 
-function AddRun() {
-  const getDate = () => {
-    const d = new Date()
-    const { timeZone } = Intl.DateTimeFormat().resolvedOptions()
-    const [day, month, year] = d.toLocaleDateString('en-NZ', { timeZone: timeZone }).split('/')
-    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
-  }
+type MaybeDate = dayjs.Dayjs | null
+const dateToString = (date: MaybeDate) => date ? date.format('YYYY-MM-DD') : ''
 
+function AddRun() {
   const [showForm, setShowForm] = useState(false)
-  const [date, setDate] = useState(getDate())
+  const [date, setDate] = useState(dayjs(new Date()) as MaybeDate)
   const [points, setPoints] = useState([] as RunPoint[])
 
   const addPoint = (e: FormEvent) => {
@@ -20,9 +20,11 @@ function AddRun() {
     const d = (e.target as HTMLFormElement).distance.value
     const t = (e.target as HTMLFormElement).time.value
 
+    // TODO: check if distance and time are above zero rather than convert
     const distance = Math.abs(d)
     const time = Math.abs(t)
 
+    // TODO: check date is set to today or earlier
     if (points.find(point => point.distance === distance)) {
       alert('You already have a point for that distance')
     } else if (isNaN(distance) || isNaN(time)) {
@@ -37,20 +39,22 @@ function AddRun() {
   }
 
   const saveRun = () => {
-    createRun(date, points)
-    setDate(getDate())
+    if(date) createRun(dateToString(date), points)
+    setDate(dayjs(new Date()))
     setPoints([])
     setShowForm(false)
   }
 
   return showForm ? (
     <div>
-      <h2>Add a Run</h2>      
+      <h2>Add a Run</h2>
+      <DatePicker value={date} maxDate={dayjs(new Date())} onChange={(newValue) => setDate(newValue)} />
       <form onSubmit={addPoint}>
         <label htmlFor="distance">Distance</label>
         <input type="text" id="distance" />
         <label htmlFor="time">Time</label>
         <input type="text" id="time" />
+        {/* <TimePicker views={['minutes', 'seconds']} format="mm:ss" onChange={(val:any) => console.log(val)} /> */}
         <button type="submit">Add</button>
       </form>
       {points && (
@@ -59,11 +63,10 @@ function AddRun() {
           <ul>
             {points.map((point: RunPoint) => (
               <li key={point.distance}>{point.distance} km in {point.time} minutes <button onClick={() => removePoint(point)}>x</button></li>
-            ))}
+              ))}
           </ul>
         </>
       )}
-      <p>Date set for {date} <button>Change date?</button></p>
       <button onClick={saveRun}>Save</button>
     </div>
   ) : (
